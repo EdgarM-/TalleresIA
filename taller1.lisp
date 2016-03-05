@@ -2,20 +2,30 @@
 ;Octavo Semestre
 ;Taller 1 Inteligencia Artificial
 
-(defun main(archivo resp)
+(defun main(resp)
 	;(readFile archivo)
 	(setq example '((A B C) ((0 1 2 3 4 5 6 7 8 9) (2 4 6 8) (1 3 5 7 9)) ((> A B) (= A C) (= B(− C 1)))))
     (setq var (car example))
     (setq dom  (cadr example))
     (setq rest (caddr example))
-    (rtoTable var rest dom nil)
+    (rtoTable (varDom var dom ()) rest nil)
 	  ;(elimVar (arcoCon (domCon V (rtoTable var rest dom ()) D)))
 )
 
-(defun rtoTable (V R D res) 
+(defun varDom (VD res)
+  (cond ((null V) (inverse res ()))
+    (t (varDom (cdr V) (cdr D) (cons (append (cons (car V) () ) (car D)) res) ))
+    )
+  )
+
+(defun inverse (lista resp)
+    (cond ((null lista) resp)
+          (t (inverse (cdr lista)(cons (car lista) resp)))))
+
+(defun rtoTable (VD R res) 
     "Documentation for rtoTable."
     (cond ((null R) res)
-      (t (rtoTable (cadr R) D (actRes V (car R) D res)) 
+      (t (rtoTable VD (cdr R) (actRes VD (car R) res)) 
 
         )
     )
@@ -28,10 +38,8 @@
 )
 
 (defun checkRes (V V1 V2 R D res)
-  (print v1)
-  (print v2)
-  (print R)
-  (print res)
+  (cond (t res)
+    )
 
   )
 
