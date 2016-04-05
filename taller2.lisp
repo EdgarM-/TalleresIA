@@ -24,7 +24,7 @@
 )
 ;Resuelve la doble implicacion cambiando la por dos implicaciones en ambos sentidos.
 (defun resolveDoubleI (exp)
-	(cond ((equal (car exp) 'sys) (cons 'and (list (list 'imp  (resolveDoubleI (cadr exp)) (resolveDoubleI (caddr exp))))))
+	(cond ((equal (car exp) 'sys) (cons 'and (list (list 'imp  (resolveDoubleI (cadr exp)) (resolveDoubleI (caddr exp))) (list 'imp  (resolveDoubleI (caddr exp)) (resolveDoubleI (cadr exp))))))
 		((not (in (car exp) '(sys imp or and not))) (append exp))
 		(t (append (car exp)))
 
@@ -39,13 +39,17 @@
 	)
 
 ;Aplica la negacion donde esta se encuentre y la distribuye
-(defun applyNeg (exp)
-	(cond ((and (equal (car exp) 'not) (equal (cadr exp) 'or)) (cons 'and (list (applyNeg (cadr exp)))))
-		((and (equal (car exp) 'not) (equal (cadr exp) 'and)) (cons 'or (list (applyNeg (cadr exp)))) )
-		((not (in (car exp) '(or and not))) (append (list 'not) exp))
-		(t (append (list (car exp)) (list applyNeg (cadr exp)) ))
-	)
+(defun applyNeg (exp flag)
+	
 )
+
+(defun newapplyNeg (exp)
+	(cond ((equal (car exp) 'not) (append (newapplyNeg (cadr exp))))
+		((not (in (car exp) '(or and not))) (append exp))
+		(t (append (list (car exp) (newapplyNeg (cadr exp)))))
+
+		)
+	)
 ;Devuelve el largo de la lista l dadas
 (defun len (l n)
 	(cond ((null l) n)
